@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">task 7 tracker</string>
+    <string name="sign_in">Sign in</string>
+    <string name="user_name">User name</string>
+    <string name="password">Password</string>
+    <string name="password2">Repeat your password</string>
+    <string name="forgot_pass">Forgot password?</string>
+    <string name="do_not_have_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="calendar">Calendar</string>
+    <string name="exit">Exit</string>
+    <string name="timeline">Timeline</string>
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="registration">REGISTRATION</string>
+    <string name="Notification">Notification:
+        your user name - must be your email,
+    your password must constraint 6+ symbols</string>
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_registration">Registration</string>
+    <string name="tracker_is_off">TRACKER IS OFF</string>
+    <string name="tracker">TRACKER</string>
+    <string name="gps_is_off">GPS IS OFF</string>
+    <string name="collect_locations">COLLECT LOCATIONS</string>
+    <string name="tracker_cant_collect">Tracker can\'t collect locations</string>
+    <string name="start">START</string>
+    <string name="stop">STOP</string>
+    <array name="orange_gradient">
+        <item>#FFFFFF</item>
+        <item>#FF8A00</item>
+        <item>#BC512F</item>
+        <item>#FFFFFF</item>
+        <item>#FFFFFF</item>
+    </array>
+</resources>
