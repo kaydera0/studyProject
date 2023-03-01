@@ -2,7 +2,6 @@ package com.example.task7tracker.di
 
 
 import android.content.Context
-import com.example.task7tracker.utils.DataBaseHelper
 import com.example.task7tracker.utils.DataBaseUtils
 import com.example.task7tracker.utils.FirebaseUtils
 import dagger.Module
@@ -18,12 +17,6 @@ class HiltDI {
 
     @Provides
     @Singleton
-    fun provideDataBaseHelper(@ApplicationContext context: Context): DataBaseHelper {
-        return DataBaseHelper(context = context)
-    }
-
-    @Provides
-    @Singleton
     fun provideDataBaseUtils(@ApplicationContext context: Context): DataBaseUtils {
         return DataBaseUtils(context = context)
     }
@@ -33,4 +26,5 @@ class HiltDI {
     fun provideFirebaseUtils(): FirebaseUtils {
         return FirebaseUtils()
     }
+
 }

@@ -1,49 +1,34 @@
 package com.example.task7tracker.utils
 
-import android.annotation.SuppressLint
-import android.content.ContentValues
 import android.content.Context
-import android.database.sqlite.SQLiteDatabase
+import androidx.room.Room
 import com.example.task7tracker.dataClasses.LocationData
-import com.example.task7tracker.utils.FeedReaderContract.FeedEntry.DATE
-import com.example.task7tracker.utils.FeedReaderContract.FeedEntry.LATITUDE
-import com.example.task7tracker.utils.FeedReaderContract.FeedEntry.LONGITUDE
-import com.example.task7tracker.utils.FeedReaderContract.FeedEntry.TABLE_NAME
-import com.example.task7tracker.utils.FeedReaderContract.FeedEntry.TIME
+import com.example.task7tracker.dataClasses.RoomLocationData
+import com.example.task7tracker.utils.roomUtils.RoomDB
 
 class DataBaseUtils(context: Context) {
 
-    private val dataBaseHelper = DataBaseHelper(context)
-    var db: SQLiteDatabase? = null
+    private val dbRoom = Room.databaseBuilder(
+        context,
+        RoomDB::class.java, "database-name"
+    ).build()
+    private val locationDataDao = dbRoom.roomLocationDataDao()
 
-    fun saveToDB(locationData: LocationData) {
-        db = dataBaseHelper.writableDatabase
-        val values = ContentValues().apply {
-            put(LONGITUDE, locationData.longitude)
-            put(LATITUDE, locationData.latitude)
-            put(DATE, locationData.date)
-            put(TIME, locationData.time)
-        }
-        db?.insert(TABLE_NAME, null, values)
-
+    suspend fun saveToDBRoom(locationData: LocationData) {
+        val roomLocationData = RoomLocationData.toLocationDataRoom(locationData)
+        locationDataDao?.insertUserLocation(roomLocationData)
     }
 
-    @SuppressLint("Range")
-    fun readFromDB(): ArrayList<LocationData> {
-        val arrayList = ArrayList<LocationData>()
-        db = dataBaseHelper.readableDatabase
-        val cursor = db?.query(TABLE_NAME, null, null, null, null, null, null)
-        with(cursor) {
-            while (this?.moveToNext()!!) {
-                val locationData = LocationData(
-                    cursor?.getDouble(cursor.getColumnIndex(LONGITUDE))!!,
-                    cursor.getDouble(cursor.getColumnIndex(LATITUDE)),
-                    cursor.getString(cursor.getColumnIndex(DATE))!!,
-                    cursor.getString(cursor.getColumnIndex(TIME))!!
-                )
-                arrayList.add(locationData)
-            }
+    suspend fun readFromDBRoom(): ArrayList<LocationData>? {
+        val locationDao = locationDataDao?.getUserLocations()
+        val locations = ArrayList<LocationData>()
+        for (i in locationDao!!) {
+            locations.add(i.toLocationData())
         }
-        return arrayList
+        return locations
+    }
+
+    suspend fun clearDBRoom() {
+        locationDataDao?.clearTable()
     }
 }

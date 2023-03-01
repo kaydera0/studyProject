@@ -1,42 +1,49 @@
-package com.example.task7tracker.activities
+package com.example.task7tracker.fragments
 
-
-import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.task7tracker.R
-import com.example.task7tracker.databinding.ActivityRegistrationBinding
+import com.example.task7tracker.databinding.FragmentRegistrationBinding
 import com.example.task7tracker.viewModels.RegistrationViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class RegistrationActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityRegistrationBinding
+@AndroidEntryPoint
+class RegistrationFragment @Inject constructor() : Fragment() {
+
+    private lateinit var binding: FragmentRegistrationBinding
     private val viewModel = RegistrationViewModel()
     private var userName = ""
     private var password = ""
     private var password2 = ""
 
-    @SuppressLint("SuspiciousIndentation")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityRegistrationBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentRegistrationBinding.inflate(layoutInflater)
+
         binding.signUpBtn.setOnClickListener {
             val auth = Firebase.auth
             auth.createUserWithEmailAndPassword(userName, password)
-                .addOnCompleteListener(this) { task ->
+                .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(
-                            baseContext, "success",
+                            context, "success",
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
                         Toast.makeText(
-                            this, "something wrong",
+                            context, "something wrong",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -63,13 +70,18 @@ class RegistrationActivity : AppCompatActivity() {
                     userName.isNotEmpty() && password == password2 && password.length > 5
             }
         }
-        viewModel.signUpIsEnable.observe(this, Observer {
+        viewModel.signUpIsEnable.observe(viewLifecycleOwner, Observer {
             binding.signUpBtn.isEnabled = it == true
             if (it) {
-                binding.signUpBtn.background = getDrawable(R.drawable.btn_sign_enable)
+                binding.signUpBtn.background = ResourcesCompat.getDrawable(
+                    requireActivity().resources, R.drawable.btn_sign_enable, null
+                )
             } else {
-                binding.signUpBtn.background = getDrawable(R.drawable.btn_sign_disable)
+                binding.signUpBtn.background = ResourcesCompat.getDrawable(
+                    requireActivity().resources, R.drawable.btn_sign_disable, null
+                )
             }
         })
+        return binding.root
     }
 }

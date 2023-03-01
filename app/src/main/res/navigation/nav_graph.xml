@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.task7tracker.activities.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.task7tracker.fragments.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_trackingFragment"
+            app:destination="@id/trackingFragment" />
+        <argument
+            android:name="userName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/trackingFragment"
+        android:name="com.example.task7tracker.fragments.TrackingFragment"
+        android:label="fragment_tracking"
+        tools:layout="@layout/fragment_tracking" >
+        <action
+            android:id="@+id/action_trackingFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.example.task7tracker.fragments.RegistrationFragment"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration" >
+        <action
+            android:id="@+id/action_registrationFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+</navigation>

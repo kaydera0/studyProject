@@ -19,6 +19,12 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
     }
 
     buildTypes {
@@ -82,10 +88,45 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
+
+    implementation("androidx.room:room-runtime:2.5.0")
+    annotationProcessor("androidx.room:room-compiler:2.5.0")
+
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:2.5.0")
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:2.5.0")
+
+    // optional - RxJava2 support for Room
+    implementation("androidx.room:room-rxjava2:2.5.0")
+
+    // optional - RxJava3 support for Room
+    implementation("androidx.room:room-rxjava3:2.5.0")
+
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation("androidx.room:room-guava:2.5.0")
+
+    // optional - Test helpers
+    testImplementation("androidx.room:room-testing:2.5.0")
+
+    // optional - Paging 3 Integration
+    implementation("androidx.room:room-paging:2.5.0")
+
+    // Kotlin nav graph
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+
+    // Feature module Support
+    implementation("androidx.navigation:navigation-dynamic-features-fragment:2.5.3")
+
+    // Testing Navigation
+    androidTestImplementation("androidx.navigation:navigation-testing:2.5.3")
+
+
     //other
-//    implementation 'com.android.support:support-annotations:28.0.0'
     implementation 'com.github.guilhe:circular-progress-view:2.0.0'
-//    implementation "com.github.franriadigos:circular-progress:1.0"
+
 }
 kapt {
     correctErrorTypes true
