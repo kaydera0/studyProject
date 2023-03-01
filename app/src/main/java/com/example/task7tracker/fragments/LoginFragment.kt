@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,9 +24,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class LoginFragment @Inject constructor(): Fragment() {
 
-
-    @Inject lateinit var trackingFragment : TrackingFragment
-    private lateinit var binding: FragmentLoginBinding
+    private  var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
     private val vm: LoginFragmentViewModel by viewModels()
     private lateinit var auth: FirebaseAuth
     private var userName = ""
@@ -37,20 +37,18 @@ class LoginFragment @Inject constructor(): Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentLoginBinding.inflate(layoutInflater)
+        _binding = FragmentLoginBinding.inflate(layoutInflater)
 
         auth = Firebase.auth
 
-        binding.signInBtn.setOnClickListener {
+        binding!!.signInBtn.setOnClickListener {
 
             userName = binding.userNameText.text.toString()
             password = binding.passwordText.text.toString()
             auth.signInWithEmailAndPassword(userName, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        val bundle = Bundle()
-                        bundle.putString(USERNAME_TAG, binding.userNameText.text.toString())
-                        trackingFragment.arguments = bundle
+                        val bundle = bundleOf(binding.userNameText.text.toString() to USERNAME_TAG)
                         findNavController().navigate(R.id.action_loginFragment_to_trackingFragment,bundle)
                     } else {
                         Toast.makeText(
@@ -89,4 +87,9 @@ class LoginFragment @Inject constructor(): Fragment() {
             })
         return binding.root
     }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }

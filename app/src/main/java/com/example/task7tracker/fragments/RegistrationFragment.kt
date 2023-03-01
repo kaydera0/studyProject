@@ -20,7 +20,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class RegistrationFragment @Inject constructor() : Fragment() {
 
-    private lateinit var binding: FragmentRegistrationBinding
+    private var _binding: FragmentRegistrationBinding? = null
+    private val binding get() = _binding!!
     private val viewModel = RegistrationViewModel()
     private var userName = ""
     private var password = ""
@@ -30,7 +31,7 @@ class RegistrationFragment @Inject constructor() : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentRegistrationBinding.inflate(layoutInflater)
+        _binding = FragmentRegistrationBinding.inflate(layoutInflater)
 
         binding.signUpBtn.setOnClickListener {
             val auth = Firebase.auth
@@ -83,5 +84,9 @@ class RegistrationFragment @Inject constructor() : Fragment() {
             }
         })
         return binding.root
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

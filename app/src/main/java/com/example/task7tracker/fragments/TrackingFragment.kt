@@ -32,7 +32,8 @@ import javax.inject.Inject
 class TrackingFragment @Inject constructor() : Fragment(), OnMapReadyCallback {
 
     private val vm: TrackingViewModel by viewModels()
-    private lateinit var binding: FragmentTrackingBinding
+    private var _binding: FragmentTrackingBinding? = null
+    private val binding get() = _binding!!
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
@@ -42,18 +43,17 @@ class TrackingFragment @Inject constructor() : Fragment(), OnMapReadyCallback {
     private val DEFAULT_STR = "userName"
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentTrackingBinding.inflate(layoutInflater)
+        _binding = FragmentTrackingBinding.inflate(layoutInflater)
 
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireContext())
         getLocationPermission()
 
         userName = arguments?.getString(USERNAME_TAG, DEFAULT_STR).toString()
+
         vm.networkStatus.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it) {
                 binding.trackingImage.setImageDrawable(
@@ -99,7 +99,9 @@ class TrackingFragment @Inject constructor() : Fragment(), OnMapReadyCallback {
                         }
                     }
                 } else {
-                    Toast.makeText(context, getString(R.string.turn_on_internet), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context, getString(R.string.turn_on_internet), Toast.LENGTH_SHORT
+                    ).show()
                 }
             } else {
                 isTrackingActive = false
@@ -125,15 +127,14 @@ class TrackingFragment @Inject constructor() : Fragment(), OnMapReadyCallback {
     private fun getLocationPermission() {
 
         if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            == PackageManager.PERMISSION_GRANTED
+                requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
         ) {
             vm.locationPermissionGranted.value = true
         } else {
             ActivityCompat.requestPermissions(
-                requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                requireActivity(),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
             )
         }
@@ -141,17 +142,13 @@ class TrackingFragment @Inject constructor() : Fragment(), OnMapReadyCallback {
 
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ) {
         vm.locationPermissionGranted.value = false
         when (requestCode) {
             PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
 
-                if (grantResults.isNotEmpty() &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED
-                ) {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     vm.locationPermissionGranted.value = true
                 }
             }
@@ -161,5 +158,10 @@ class TrackingFragment @Inject constructor() : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

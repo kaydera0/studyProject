@@ -9,5 +9,9 @@ import com.example.task7tracker.dataClasses.RoomLocationData
     version = 1
 )
 abstract class RoomDB : RoomDatabase() {
+
     abstract fun roomLocationDataDao(): RoomLocationDataDao?
+    companion object{
+        val DB_NAME = "database-name"
+    }
 }
