@@ -38,12 +38,12 @@ class RegistrationFragment @Inject constructor() : Fragment() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(
-                            context, "success",
+                            context, getString(R.string.success),
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
                         Toast.makeText(
-                            context, "something wrong",
+                            context, getString(R.string.something_wrong),
                             Toast.LENGTH_SHORT
                         ).show()
                     }

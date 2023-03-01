@@ -38,6 +38,8 @@ class TrackingFragment @Inject constructor() : Fragment(), OnMapReadyCallback {
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
     private var isTrackingActive = false
     private var userName = ""
+    private val USERNAME_TAG = "userName"
+    private val DEFAULT_STR = "userName"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +53,7 @@ class TrackingFragment @Inject constructor() : Fragment(), OnMapReadyCallback {
             LocationServices.getFusedLocationProviderClient(requireContext())
         getLocationPermission()
 
-        userName = arguments?.getString("userName", "default").toString()
+        userName = arguments?.getString(USERNAME_TAG, DEFAULT_STR).toString()
         vm.networkStatus.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it) {
                 binding.trackingImage.setImageDrawable(
@@ -97,7 +99,7 @@ class TrackingFragment @Inject constructor() : Fragment(), OnMapReadyCallback {
                         }
                     }
                 } else {
-                    Toast.makeText(context, "Please turn on internet", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(R.string.turn_on_internet), Toast.LENGTH_SHORT).show()
                 }
             } else {
                 isTrackingActive = false
@@ -147,7 +149,6 @@ class TrackingFragment @Inject constructor() : Fragment(), OnMapReadyCallback {
         when (requestCode) {
             PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
 
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {

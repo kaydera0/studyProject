@@ -30,6 +30,7 @@ class LoginFragment @Inject constructor(): Fragment() {
     private lateinit var auth: FirebaseAuth
     private var userName = ""
     private var password = ""
+    private val USERNAME_TAG = "userName"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,12 +49,12 @@ class LoginFragment @Inject constructor(): Fragment() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val bundle = Bundle()
-                        bundle.putString("userName", binding.userNameText.text.toString())
+                        bundle.putString(USERNAME_TAG, binding.userNameText.text.toString())
                         trackingFragment.arguments = bundle
                         findNavController().navigate(R.id.action_loginFragment_to_trackingFragment,bundle)
                     } else {
                         Toast.makeText(
-                            context, "Authentication failed.",
+                            context, getString(R.string.authentication_failed),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
