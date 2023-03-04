@@ -46,6 +46,7 @@ class TrackingViewModel @Inject constructor(
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     fun sendLocationsFromDBToFirebase(collectionName: String) {
         viewModelScope.launch {
             val locationsArray = roomBaseUtils.roomLocationDataDao()?.getUserLocations()

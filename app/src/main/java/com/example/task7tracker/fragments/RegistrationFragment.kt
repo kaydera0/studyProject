@@ -9,6 +9,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.task7tracker.R
 import com.example.task7tracker.databinding.FragmentRegistrationBinding
 import com.example.task7tracker.viewModels.RegistrationViewModel
@@ -42,6 +43,7 @@ class RegistrationFragment @Inject constructor() : Fragment() {
                             context, getString(R.string.success),
                             Toast.LENGTH_SHORT
                         ).show()
+                        findNavController().navigate(R.id.action_registrationFragment_to_loginFragment)
                     } else {
                         Toast.makeText(
                             context, getString(R.string.something_wrong),
