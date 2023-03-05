@@ -23,7 +23,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_registration">Registration</string>
     <string name="tracker_is_off">TRACKER IS OFF</string>
-    <string name="tracker">TRACKER</string>
+    <string name="tracker">Tracker</string>
     <string name="gps_is_off">GPS IS OFF</string>
     <string name="collect_locations">COLLECT LOCATIONS</string>
     <string name="tracker_cant_collect">Tracker can\'t collect locations</string>
@@ -40,4 +40,6 @@
     <string name="success">success</string>
     <string name="something_wrong">something wrong</string>
     <string name="authentication_failed">Authentication failed.</string>
+    <string name="show_pass">Show password.</string>
+    <string name="hide_pass">Hide password.</string>
 </resources>
